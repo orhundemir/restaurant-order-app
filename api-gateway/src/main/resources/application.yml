@@ -1,0 +1,49 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':  # Tüm yollar için CORS'u etkinleştir
+            allowedOrigins:
+              - "http://localhost:3000"  # React uygulamanızın URL'si
+            allowedMethods:
+              - "GET"
+              - "POST"
+              - "PUT"
+              - "DELETE"
+              - "OPTIONS"
+            allowedHeaders:
+              - "Authorization"
+              - "Cache-Control"
+              - "Content-Type"
+            allowCredentials: true  # Çerez paylaşımı için gerekli
+        add-to-simple-url-handler-mapping:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+        - id: menu-service
+          uri: lb://menu-service
+          predicates:
+            - Path=/menus/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/orders/**
+
+    discovery:
+      enabled: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    prefer-ip-address: true

@@ -45,4 +45,10 @@ public class UserController {
         List<UserInfoResponse> userInfoResponses = userService.getAllUsers();
         return new ResponseEntity<>(userInfoResponses, HttpStatus.OK);
     }
+
+    @GetMapping("/sellers")
+    public ResponseEntity<List<UserInfoResponse>> getAllSellers() {
+        List<UserInfoResponse> userInfoResponses = userService.getAllSellers();
+        return new ResponseEntity<>(userInfoResponses, HttpStatus.OK);
+    }
 }

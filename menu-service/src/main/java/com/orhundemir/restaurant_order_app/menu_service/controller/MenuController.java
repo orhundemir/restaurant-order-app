@@ -34,6 +34,10 @@ public class MenuController {
     public ResponseEntity<MenuResponseDTO> getMenuById(@PathVariable UUID id) {
         return ResponseEntity.ok(menuService.getMenuById(id));
     }
+    @PostMapping("/seller")
+    public ResponseEntity<List<MenuResponseDTO>> getMenusBySellerIds(@RequestBody List<UUID> ids) {
+        return ResponseEntity.ok(menuService.getMenusBySellerIds(ids));
+    }
 
     @GetMapping
     public ResponseEntity<List<MenuResponseDTO>> getAllMenus() {

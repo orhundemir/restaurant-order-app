@@ -58,6 +58,18 @@ public class MenuService {
         return menuMapper.toMenuResponseDTO(menuEntity);
     }
 
+
+    public List<MenuResponseDTO> getMenusBySellerIds(List<UUID> sellerIds) {
+        // Veritabanından sellerId'ye göre menüleri al
+        List<MenuEntity> menus = menuRepository.findBySellerIdIn(sellerIds);
+
+        // Menüleri DTO'ya dönüştür ve döndür
+        return menus.stream()
+                .map(menuMapper::toMenuResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+
     public List<MenuResponseDTO> getAllMenus() {
         // Tüm menüleri getir
         List<MenuEntity> menus = menuRepository.findAll();

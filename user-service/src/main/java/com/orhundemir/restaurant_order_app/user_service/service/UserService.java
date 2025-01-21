@@ -35,4 +35,14 @@ public class UserService {
     public List<UserInfoResponse> getAllUsers() {
         return userRepository.findAll().stream().map(mapStructMapper::toUserInfoResponse).collect(Collectors.toList());
     }
+    public List<UserInfoResponse> getAllSellers() {
+        return userRepository.findAll()
+                .stream()
+                .filter(user -> user.getAuthorities().stream()
+                        .anyMatch(role -> "SELLER".equals(role.getValue()))) // RoleName "ROLE_SELLER" kontrolü
+                .map(mapStructMapper::toUserInfoResponse)
+                .collect(Collectors.toList());
+    }
+
+
 }

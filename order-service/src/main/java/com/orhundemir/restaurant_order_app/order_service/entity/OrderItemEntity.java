@@ -18,13 +18,13 @@ public class OrderItemEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
+    @JoinColumn(name = "orderId", nullable = false)
     private OrderEntity order; // Siparişin kendisi
 
     @Column(nullable = false)
     private UUID menuItemId; // Menü öğesi ID'si
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String menuItemName; // Menü öğesi adı (Kolay erişim için)
 
     @Column(nullable = false)
