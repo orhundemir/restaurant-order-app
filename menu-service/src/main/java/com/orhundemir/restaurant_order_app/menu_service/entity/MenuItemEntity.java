@@ -28,6 +28,9 @@ public class MenuItemEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    @Column(updatable = false)
+    private UUID sellerId;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;

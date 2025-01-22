@@ -32,7 +32,7 @@ public class OrderEntity {
     private double totalPrice; // Siparişin toplam tutarı
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "PENDING")
     private OrderStatus status; // Sipariş durumu (PENDING, PREPARING, COMPLETED, CANCELED)
 
     @Column(nullable = false)

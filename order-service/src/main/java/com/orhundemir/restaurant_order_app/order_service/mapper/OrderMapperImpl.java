@@ -25,7 +25,8 @@ public class OrderMapperImpl implements OrderMapper {
         orderEntity.setUserId(orderRequestDTO.getUserId());
         orderEntity.setSellerId(orderRequestDTO.getSellerId());
         orderEntity.setTotalPrice(orderRequestDTO.getTotalPrice());
-        orderEntity.setStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
+        if(orderRequestDTO.getStatus()!=null)
+            orderEntity.setStatus(OrderStatus.valueOf(orderRequestDTO.getStatus()));
         orderEntity.setCreatedAt(now);
         orderEntity.setUpdatedAt(now);
 
@@ -55,7 +56,6 @@ public class OrderMapperImpl implements OrderMapper {
         orderResponseDTO.setUserId(orderEntity.getUserId());
         orderResponseDTO.setSellerId(orderEntity.getSellerId());
         orderResponseDTO.setTotalPrice(orderEntity.getTotalPrice());
-        orderResponseDTO.setStatus(orderEntity.getStatus().name());
         orderResponseDTO.setCreatedAt(orderEntity.getCreatedAt());
         orderResponseDTO.setUpdatedAt(orderEntity.getUpdatedAt());
         orderResponseDTO.setItems(orderEntity.getItems() != null

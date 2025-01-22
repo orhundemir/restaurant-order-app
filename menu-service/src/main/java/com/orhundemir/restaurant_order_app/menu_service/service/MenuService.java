@@ -33,7 +33,7 @@ public class MenuService {
         // Veritabanına kaydet
         MenuEntity savedMenu = menuRepository.save(menuEntity);
 
-        // Kaydedilen menüyü DTO'ya dönüştür ve döndür
+        savedMenu.getMenuItems().forEach(menuItem -> {menuItem.setSellerId(savedMenu.getId());});
         return menuMapper.toMenuResponseDTO(savedMenu);
     }
 
