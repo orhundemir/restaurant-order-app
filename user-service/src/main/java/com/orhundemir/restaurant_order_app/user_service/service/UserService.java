@@ -3,45 +3,47 @@ package com.orhundemir.restaurant_order_app.user_service.service;
 import com.orhundemir.restaurant_order_app.user_service.dto.request.UserRequest;
 import com.orhundemir.restaurant_order_app.user_service.dto.response.UserInfoResponse;
 import com.orhundemir.restaurant_order_app.user_service.entity.UserEntity;
-import com.orhundemir.restaurant_order_app.user_service.mapper.MapStructMapperImpl;
+import com.orhundemir.restaurant_order_app.user_service.mapper.UserMapper;
 import com.orhundemir.restaurant_order_app.user_service.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final MapStructMapperImpl mapStructMapper;
+    private final UserMapper userMapper;
 
 
-    public UserService(UserRepository userRepository, MapStructMapperImpl mapStructMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.mapStructMapper = mapStructMapper;
+        this.userMapper = userMapper;
     }
 
-    public UserEntity createUser(UserRequest userRequest) {
-        return userRepository.save(mapStructMapper.toUserEntity(userRequest));
+    public UserInfoResponse createUser(UserRequest userRequest) {
+        UserEntity user = userRepository.save(userMapper.toEntity(userRequest));
+        return userMapper.toResponse(user);
     }
 
     public UserInfoResponse getUserInfo(String userId) {
-        return mapStructMapper.toUserInfoResponse(userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found")));
+        return userMapper.toResponse(userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new EntityNotFoundException("User with id " + userId + " not found")));
     }
 
     public List<UserInfoResponse> getAllUsers() {
-        return userRepository.findAll().stream().map(mapStructMapper::toUserInfoResponse).collect(Collectors.toList());
+        return userMapper.toResponseList(userRepository.findAll());
     }
+
     public List<UserInfoResponse> getAllSellers() {
-        return userRepository.findAll()
+        List<UserEntity> userList = userRepository.findAll()
                 .stream()
                 .filter(user -> user.getAuthorities().stream()
-                        .anyMatch(role -> "SELLER".equals(role.getValue()))) // RoleName "ROLE_SELLER" kontrolü
-                .map(mapStructMapper::toUserInfoResponse)
-                .collect(Collectors.toList());
+                        .anyMatch(role -> "SELLER".equals(role.getValue()))).toList(); // RoleName "ROLE_SELLER" kontrolü
+
+        return userMapper.toResponseList(userList);
     }
 
 

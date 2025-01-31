@@ -3,7 +3,6 @@ package com.orhundemir.restaurant_order_app.user_service.controller;
 
 import com.orhundemir.restaurant_order_app.user_service.dto.request.UserRequest;
 import com.orhundemir.restaurant_order_app.user_service.dto.response.UserInfoResponse;
-import com.orhundemir.restaurant_order_app.user_service.mapper.MapStructMapperImpl;
 import com.orhundemir.restaurant_order_app.user_service.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,23 +12,18 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-    private final MapStructMapperImpl mapStructMapper;
 
-
-    public UserController(UserService userService, MapStructMapperImpl mapStructMapper) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.mapStructMapper = mapStructMapper;
     }
 
     // Kullanıcı oluşturma
     @PostMapping
     public ResponseEntity<UserInfoResponse> createUser(@RequestBody UserRequest userRequest) {
-        UserInfoResponse userInfoResponse = mapStructMapper.toUserInfoResponse(userService.createUser(userRequest));
-        return new ResponseEntity<>(userInfoResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
 
     // Kullanıcı bilgilerini alma

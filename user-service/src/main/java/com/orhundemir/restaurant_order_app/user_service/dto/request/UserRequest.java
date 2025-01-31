@@ -8,7 +8,6 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserRequest {
      String name;
      String email;

@@ -14,9 +14,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Builder
 public class UserEntity {
 
     @Id
@@ -27,28 +24,26 @@ public class UserEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String address;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Column( nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
     @ColumnDefault(value = "true")
-    private boolean status;
+    private boolean status = true;
 
 
     @ElementCollection(targetClass = RoleEntity.class, fetch = FetchType.LAZY)
@@ -56,4 +51,16 @@ public class UserEntity {
     @Column(name = "roleName", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<RoleEntity> authorities;
+
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }
